@@ -6,7 +6,7 @@ module.exports = {
 		kill_timeout: 30000,
 		wait_ready: true,
 		merge_logs: true,
-		instances: -2,
+		instances: -1,
 		log_date_format: "YYYY-MM-DD HH:mm Z"
 	}]
 }

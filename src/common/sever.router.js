@@ -1,12 +1,19 @@
 const express = require('express')
 const router = express.Router();
 
-router.get('/shivani', async (req, res, next) => {
+const articleRouter = require('../apis/articles/article.router');
+const followerRouter = require('../apis/followers/follower.router');
+const subscriptionRouter = require('../apis/subscriptions/subscription.router');
+const userRouter = require('../apis/users/user.router');
 
-    let temp = await db.from('public.temp').select(['*'])
-
-    res.status(HttpStatus.OK).send({ success: true, data: temp});
+router.get('/test', async (req, res, next) => {
+    res.status(HttpStatus.OK).send({ success: true, data: 'this is a test endpoint'});
 })
+
+router.use('/article', articleRouter);
+router.use('/follower', followerRouter);
+router.use('/subscription', subscriptionRouter);
+router.use('/user', userRouter);
 
 
 module.exports = router;
