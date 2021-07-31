@@ -5,7 +5,7 @@ router.get('/shivani', async (req, res, next) => {
 
     let temp = await db.from('public.temp').select(['*'])
 
-    res.send(temp)
+    res.status(HttpStatus.OK).send({ success: true, data: temp});
 })
 
 
