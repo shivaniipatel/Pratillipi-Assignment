@@ -141,8 +141,3 @@ Also consider how we can add and view an author and her eligibility status.
     - authentication
     - authors cannot follow fellow author 
     - test suite 
-    
--TODO 
-    - comments 
-    - transaction 
-    - batches

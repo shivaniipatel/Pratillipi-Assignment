@@ -17,14 +17,22 @@ class SubscriptionCtrl {
                 return res.status(HttpStatus.OK).send({success: true, msg: "No changes in configuration" });   
             }
 
-            //in trx (call in batches) -------------------
-
             let authorIds = await UserServices.getAllAuthorIds();
 
             let thresholdMap = SubscriptionServices.createThresholdMap(req.body.constraints);            
 
-            await SubscriptionServices.updateSubscriptionCaps(req.body.constraints);            
-            await SubscriptionServices.updateAuthorSubscription(authorIds, thresholdMap);
+            await db.transaction(async function(trx) {
+
+                await SubscriptionServices.updateSubscriptionCaps(req.body.constraints, trx);            
+                
+                for (let i = 0;i < authorIds.length;i += parseInt(500) ) {
+
+                    let batch = authorIds.slice(i, parseInt(i) + parseInt(500));
+
+                    await SubscriptionServices.updateAuthorSubscription(batch, thresholdMap, trx);
+
+                }
+            })
 
             return res.status(HttpStatus.OK).send({success: true, msg: "Successfully Updated Threshold and Premium Subscription Eligibility of Authors" });
 
@@ -45,15 +53,19 @@ class SubscriptionCtrl {
     static async updateAuthorSubscription(req, res, next) {
         try {
             
-            //(call in batches) ------------------------------
-
             let authorIds = await UserServices.getAllAuthorIds();
 
             let threshold = await SubscriptionServices.getSubscriptionConstraints();
 
             let thresholdMap = SubscriptionServices.createThresholdMap(threshold);            
 
-            await SubscriptionServices.updateAuthorSubscription(authorIds, thresholdMap);
+            for (let i = 0;i < authorIds.length;i += parseInt(500) ) {
+
+                let batch = authorIds.slice(i, parseInt(i) + parseInt(500));
+
+                await SubscriptionServices.updateAuthorSubscription(batch, thresholdMap);
+
+            }
 
             return res.status(HttpStatus.OK).send({success: true, msg: "Successfully Updated Premium Subscription Eligibility of Authors", date: new Date() });
 

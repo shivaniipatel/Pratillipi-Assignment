@@ -15,13 +15,13 @@ class SubscriptionQuery {
     }
 
 
-    static updateSubscriptionEligibility(updateQuery) {
-        return db.raw(updateQuery);
+    static updateSubscriptionEligibility(updateQuery, trx=db) {
+        return trx.raw(updateQuery);
     }
 
 
-    static updateSubscriptionCaps(updateQuery) {
-        return db.raw(updateQuery);
+    static updateSubscriptionCaps(updateQuery, trx=db) {
+        return trx.raw(updateQuery);
     }
 
     

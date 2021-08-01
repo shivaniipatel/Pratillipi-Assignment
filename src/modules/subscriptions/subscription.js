@@ -66,7 +66,7 @@ class SubscriptionService {
     /**
      * @description : updates threshold for premium subscription in the db 
      */
-    static async updateSubscriptionCaps(newConstraints) {
+    static async updateSubscriptionCaps(newConstraints, trx) {
 
         if (!CommonUtils.checkIfNotEmptyArray(newConstraints)) {
             return ;
@@ -80,7 +80,7 @@ class SubscriptionService {
 
         }
 
-        await SubscriptionQuery.updateSubscriptionCaps(queries);
+        await SubscriptionQuery.updateSubscriptionCaps(queries, trx);
 
         return ;
 
@@ -90,7 +90,7 @@ class SubscriptionService {
     /**
      * @description : service to update author's eligibility for the premium subscription 
      */
-    static async updateAuthorSubscription(authorIds=[], constraints={}) {
+    static async updateAuthorSubscription(authorIds=[], constraints={}, trx) {
 
         if (Object.keys(constraints).length==0) {
             throw {statusCode: HttpStatus.BAD_REQUEST, msg: "All Subscription Constraints Are Required"};
@@ -127,7 +127,7 @@ class SubscriptionService {
 
         let updateQuery = this.getUpdatedSubscription(authorsEligibility);
 
-        await SubscriptionQuery.updateSubscriptionEligibility(updateQuery);
+        await SubscriptionQuery.updateSubscriptionEligibility(updateQuery, trx);
 
         return ;
 
