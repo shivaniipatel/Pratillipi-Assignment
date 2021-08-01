@@ -7,7 +7,7 @@ create table public.authors (
 	email_id varchar(100) unique,
 	phone int8,
 	eligible_for_premium bool default false, 
-	nth_article_published_at timestamptz,
+	-- nth_article_published_at timestamptz,
 	is_active bool default true, 
 	created_at timestamptz default now(),
 	updated_at timestamptz
@@ -31,7 +31,8 @@ create table public.followers (
 	created_at timestamptz default now(),
 	updated_at timestamptz,
 	constraint authorid_fkey foreign key (author_id) references public.authors(id),
-	constraint userid_fkey foreign key (user_id) references public.users(id)
+	constraint userid_fkey foreign key (user_id) references public.users(id),
+	CONSTRAINT user_author_uniq UNIQUE(author_id, user_id) 
 ) with (oids = false);
 
 create table public.articles (
@@ -77,7 +78,7 @@ create table public.subscribers (
 create table public.subscription_constraints (
 	id serial4 unique not null,
 	name text, 
-	"constraint" text,
+	"constraint" int4,
 	code varchar(20) unique not null,
 	is_active bool default true, 
 	created_at timestamptz default now(),

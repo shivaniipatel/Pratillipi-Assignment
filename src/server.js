@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const dotenv = require('dotenv');
-const router = require('./common/sever.router');
+const router = require('./common/server.router');
 
 global.appRoot = path.resolve(__dirname);
 dotenv.config({ path: appRoot + '/../.env' })

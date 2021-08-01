@@ -1,18 +1,38 @@
 
 
+const UserServices = require('../../modules/users/user');
+const ArticleServices = require('../../modules/articles/article');
+const SubscriptionServices = require('../../modules/subscriptions/subscription');
+
 
 class ArticleCtrl {
 
     static async addArticle(req, res, next) {
         try {
             
+            //authorid, title, description(o), content
 
+            let authorExists = await UserServices.checkIfAuthorExists({id: req.body.authorid});
+            
+            if (!authorExists) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, msg: "Author Does Not Exists"};
+            }
 
-            return res.status(HttpStatus.OK).send({success: true });
+            let threshold = await SubscriptionServices.getSubscriptionConstraints();
+
+            let thresholdMap = SubscriptionServices.createThresholdMap(threshold);            
+
+            await ArticleServices.addArticle({authorid: req.body.authorid, title: req.body.title, description: req.body.description, content: req.body.content});
+
+            await SubscriptionServices.updateAuthorSubscription([req.body.authorid], thresholdMap);
+
+            return res.status(HttpStatus.OK).send({success: true, msg: "Successfully Added Article" });
 
         } catch (err) {
             console.error(err);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({success: false, msg: "Oops! Something Went Wrong!"});
+            let statusCode = err.statusCode? err.statusCode : HttpStatus.INTERNAL_SERVER_ERROR;
+            let msg = err.msg? err.msg : "Oops! Something Went Wrong!";
+            return res.status(statusCode).send({success: false, msg: msg});
         }
 
 

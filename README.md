@@ -98,10 +98,10 @@ Also consider how we can add and view an author and her eligibility status.
         - hash password 
     - view author by id  
         - author details 
+        - eligible for premium 
         - followers count 
         - total published articles 
         - articles published in the capped time 
-        - eligible for premium 
         - no. of active premium users 
     - update eligiblity blindly by author ids [------SERVICE]
         - {not_eligible : [], elgible: []}
@@ -109,21 +109,23 @@ Also consider how we can add and view an author and her eligibility status.
     - unfollow/follow an author
         - update db mappings 
         - send event to update premium eligibility  
+    - get followers count by author id [------SERVICE]
     - get followers list by author id  [optional]
     - get following list by user id [optional]
-    - get followers count by author id [------SERVICE]
 - articles (articles, author_articles_mapping(nr) )
     - add/delete an article 
         - update db mappings 
         - send event to update premium eligibility  
 - premium subscription  (premium_packages, author_subscribers_mapping/subscribers )
-    - get premium eligibility by author id  [------SERVICE]
-    - update author's eligibility by authorid  [------SERVICE]
     - update followers/publishing time/published articles cap 
         - update all authors' eligibility based on new cap 
+    - update all authors eligibility flag [---cron]
+    - get premium eligibility by author id  [------SERVICE]
+    - update author's eligibility by authorid  [------SERVICE]
     - get list of users eligible for premium subscription [optional]
         - pagination 
         - order by followers, latest published/more published  
+
 
 
 - DB model 
@@ -138,3 +140,10 @@ Also consider how we can add and view an author and her eligibility status.
     - authO 
     - authentication
     - authors cannot follow fellow author 
+    
+-TODO 
+    - comments 
+    - middleware for validating compulsory fields 
+    - crontab 
+    - transaction 
+    - batches
