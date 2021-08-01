@@ -49,7 +49,7 @@ class SubscriptionCtrl {
 
             await SubscriptionServices.updateAuthorSubscription(authorIds, thresholdMap);
 
-            return res.status(HttpStatus.OK).send({success: true, msg: "Successfully Updated Premium Subscription Eligibility of Authors" });
+            return res.status(HttpStatus.OK).send({success: true, msg: "Successfully Updated Premium Subscription Eligibility of Authors", date: new Date() });
 
         } catch (err) {
             console.error(err);
