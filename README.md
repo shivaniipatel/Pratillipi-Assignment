@@ -36,95 +36,41 @@ Also consider how we can add and view an author and her eligibility status.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-- What is required outside repo ?
-    - hostname (look for free hosting sites ) 
-    - ec2 instance with global dependencies installed  (create an AWS account)
-        - sudo su 
-        - cd
-        - /workspace
-    - to access via browser hit with public ip 
-    - nginx?
-    - elb?
-
-- What is required inside repo ?
-    - LLD?
-    - ecosystem.config.js?
-    - eslint
-    - db model 
-        - aws user : ec2-user
-            - create role of "shivani" inside /home/ec2-user  (sudo -u postgres createuser -s shivani)
-            - pw : password 
-            - to login 
-                -stay on root user 
-                - su - postgres 
-                - psql 
-        - rds postgres
-            - DB instance identifier - pratilipi-asm
-            - master username - shivani 
-            - master pw : shivanipatel
-            - db name : postgres
-        - Master
-            - Users 
-            - Authors (premium_eligible flag, maintain the timestamp at which the last nth article was published )
-            - Articles (is_published) 
-        - Followers  
-            - Author articles mapping 
-            - user author mapping
-        - SUBSCRIPTION MODEL 
-            - author premium charges maping (authorid, no. of days, charges, description)
-            - author subscribers mapping (authorid, userid, author_premium_mapping, start date, end_date? )
-    - APIS 
-        - Approach to mark author ineligible once the rolling window crosses threshold  (IMP)
-            -Approach 1: cron job with interval of one minute (can be run on worker process)
-                - cons 
-                    - wont be real time, there will be a delay of a minute 
-            - Approach 2: maintain the timestamp at which the last nth article was published 
-                - whenever the get is called, at real time we check if that timestamp is within our set interval cap 
-        - followers and publish time and count should be configurable (store in constants.js OR db?)
-            - api to change time cap and no. of articles ; this will update the timestamp of nth article of all authors ALSO eligibility flag
-        - Api for publishing article of an author; sending an event to update author's eligibility OR update the timestamp
-        - Api for following an author; sending an event to update author's eligibility 
-        - Api to see author details and her eligibility status 
-        - Api to add an author/reader
-
-
-
-
 
 - Modules 
-- Users (authors, users )
-    - add user 
-        - {type : 'author/users', name: '', emailid: '', phome: , password:  }
-        - hash password 
-    - view author by id  
-        - author details 
-        - eligible for premium 
-        - followers count 
-        - total published articles 
-        - articles published in the capped time 
-        - no. of active premium users 
-    - update eligiblity blindly by author ids [------SERVICE]
-        - {not_eligible : [], elgible: []}
-- followers  ( user_author_mapping/followers  )
-    - unfollow/follow an author
-        - update db mappings 
-        - send event to update premium eligibility  
-    - get followers count by author id [------SERVICE]
-    - get followers list by author id  [optional]
-    - get following list by user id [optional]
-- articles (articles, author_articles_mapping(nr) )
-    - add/delete an article 
-        - update db mappings 
-        - send event to update premium eligibility  
-- premium subscription  (premium_packages, author_subscribers_mapping/subscribers )
-    - update followers/publishing time/published articles cap 
-        - update all authors' eligibility based on new cap 
-    - update all authors eligibility flag [---cron]
-    - get premium eligibility by author id  [------SERVICE]
-    - update author's eligibility by authorid  [------SERVICE]
-    - get list of users eligible for premium subscription [optional]
-        - pagination 
-        - order by followers, latest published/more published  
+    - Users (authors, users )
+        - add user 
+            - {type : 'author/users', name: '', emailid: '', phome: , password:  }
+            - hash password 
+        - view author by id  
+            - author details 
+            - eligible for premium 
+            - followers count 
+            - total published articles 
+            - articles published in the capped time 
+            - no. of active premium users 
+        - update eligiblity blindly by author ids [service]
+            - {not_eligible : [], elgible: []}
+    - followers  ( user_author_mapping/followers  )
+        - unfollow/follow an author
+            - update db mappings 
+            - send event to update premium eligibility  
+        - get followers count by author id [service]
+        - get followers list by author id  [optional]
+        - get following list by user id [optional]
+    - articles (articles, author_articles_mapping(nr) )
+        - add/delete an article 
+            - update db mappings 
+            - send event to update premium eligibility  
+    - premium subscription  (premium_packages, author_subscribers_mapping/subscribers )
+        - update followers/publishing time/published articles cap 
+            - update all authors' eligibility based on new cap 
+        - update all authors eligibility flag [---cron]
+        - get premium eligibility by author id  [service]
+        - update author's eligibility by authorid  [service]
+        - get list of users eligible for premium subscription [optional]
+            - pagination 
+            - order by followers, latest published/more published  
 
 
 
