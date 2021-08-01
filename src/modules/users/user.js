@@ -4,6 +4,9 @@ const commonUtils = require('../../common/commonUtils');
 
 class UserService {
 
+    /**
+     * @description : using some constraint check if the user against that exists  
+     */
     static async checkIfAuthorExists(filters={}) {
 
         if ( Object.keys(filters).length==0) return false;
@@ -26,6 +29,9 @@ class UserService {
     }
 
 
+    /**
+     * @description : adds an article against an author in the database 
+     */
     static async addAuthor(authorDetails) {
 
         if (!authorDetails.hasOwnProperty('emailid') || !authorDetails.hasOwnProperty('name')) {
@@ -47,6 +53,9 @@ class UserService {
     }
 
 
+    /**
+     * @description : returns author details by id
+     */
     static async getAuthor(filters={}) {
 
         let authorQuery = UserQueries.getAuthors();
@@ -61,7 +70,9 @@ class UserService {
 
     }
 
-
+    /**
+     * @description : check if a author exists against the requested id  
+     */
     static async checkIfUserExists(filters={}) {
 
         let userQuery = UserQueries.getUsers();
@@ -79,6 +90,9 @@ class UserService {
     }
 
 
+    /**
+     * @description : returns a list of all author ids 
+     */
     static async getAllAuthorIds() {
         
         let authorIds = await UserQueries.getAllAuthorIds();

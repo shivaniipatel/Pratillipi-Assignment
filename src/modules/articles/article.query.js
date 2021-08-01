@@ -20,6 +20,7 @@ class ArticleQuery {
                     and a.is_active = true 
                 ) a
             where seqnum <= ${articlesLimit}
+            order by a.author_id, a.created_at
         `)
 
     }

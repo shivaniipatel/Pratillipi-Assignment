@@ -140,10 +140,9 @@ Also consider how we can add and view an author and her eligibility status.
     - authO 
     - authentication
     - authors cannot follow fellow author 
+    - test suite 
     
 -TODO 
     - comments 
-    - middleware for validating compulsory fields 
-    - crontab 
     - transaction 
     - batches

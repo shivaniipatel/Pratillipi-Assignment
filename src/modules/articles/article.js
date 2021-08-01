@@ -5,6 +5,10 @@ const knexnest = require('knexnest');
 
 class ArticleService {
 
+
+     /**
+     * @description : adds article against the author in the db
+     */
     static async addArticle(articleDetails) {
 
         if (!articleDetails.hasOwnProperty('authorid') || !articleDetails.hasOwnProperty('title') || !articleDetails.hasOwnProperty('content')) {
@@ -27,6 +31,9 @@ class ArticleService {
     }
 
 
+     /**
+     * @description : returns a list of few latest articles against each user 
+     */
     static async getCappedArticles(authorIds, articlesLimit) {
 
         if (!CommonUtils.checkIfNotEmptyArray(authorIds) || isNaN(articlesLimit) ) {

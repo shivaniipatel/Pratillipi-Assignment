@@ -4,6 +4,9 @@ const UserServices = require('../../modules/users/user');
 const CommonUtils = require('../../common/commonUtils');
 class SubscriptionCtrl {
 
+    /**
+     * @description : updates the threshold for premium subscription and the eligibility for the same of every author
+     */
     static async updateSubscriptionCap(req, res, next) {
         try {
             
@@ -36,6 +39,9 @@ class SubscriptionCtrl {
     }
 
 
+     /**
+     * @description : updates the eligibility of every author based on thresholds in the db
+     */
     static async updateAuthorSubscription(req, res, next) {
         try {
             

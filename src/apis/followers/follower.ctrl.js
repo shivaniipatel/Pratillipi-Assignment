@@ -6,10 +6,15 @@ const SubscriptionServices = require('../../modules/subscriptions/subscription')
 
 class FollowerCtrl {
 
+    /**
+     * @description : adds the follower against the author and updates the eligibility for premium of the author
+     */
     static async followAuthor(req, res, next) {
         try {
             
-            //authorid, userid, isactuve=true 
+            if ( !req.body.hasOwnProperty('authorid') || !req.body.hasOwnProperty('userid') ) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, msg: "Missing Parameters"};
+            }
 
             //check if author exists 
             let authorExists = await UserServices.checkIfAuthorExists({id: req.body.authorid});
@@ -45,8 +50,15 @@ class FollowerCtrl {
     }
 
     
+     /**
+     * @description : removes the follower against the author and updates the eligibility for premium of the author
+     */
     static async unfollowAuthor(req, res, next) {
         try {
+
+            if ( !req.body.hasOwnProperty('authorid') || !req.body.hasOwnProperty('userid') ) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, msg: "Missing Parameters"};
+            }
             
             //check if author exists 
             let authorExists = await UserServices.checkIfAuthorExists({id: req.body.authorid});

@@ -4,6 +4,9 @@ const CommonUtils = require('../../common/commonUtils');
 
 class FollowerService {
 
+     /**
+     * @description : upserts a follower againt an author
+     */
     static async upsertFollower(followDetails) {
 
         if (!followDetails.hasOwnProperty('authorid') || !followDetails.hasOwnProperty('userid') || !followDetails.hasOwnProperty('isactive')) {
@@ -19,6 +22,9 @@ class FollowerService {
     }
 
 
+     /**
+     * @description : removes a follower againt an author
+     */
     static async getFollowersCount(authorIds) {
 
         if (!CommonUtils.checkIfNotEmptyArray(authorIds)) {

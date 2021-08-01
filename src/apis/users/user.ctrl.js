@@ -8,10 +8,15 @@ const Constants = require('../../common/constants');
 
 class UserCtrl {
 
+     /**
+     * @description : adds an author in the db 
+     */
     static async addAuthor(req, res, next) {
         try {
 
-            //name, email, phone(o)
+            if ( !req.body.hasOwnProperty('name') || !req.body.hasOwnProperty('emailid') ) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, msg: "Missing Parameters"};
+            }
             
             let isExistingUser = await UserServices.checkIfAuthorExists({emailid: req.body.emailid});
 
@@ -29,14 +34,19 @@ class UserCtrl {
             let msg = err.msg? err.msg : "Oops! Something Went Wrong!";
             return res.status(statusCode).send({success: false, msg: msg});
         }
-
-
     }
 
+
+     /**
+     * @description : returns authors metadata with follower count and few latest published articles
+     */
     static async getAuthorById(req, res, next) {
         try {
             
             let authorId = req.params.id;
+            if (!authorId) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, msg: "Missing Parameters"};
+            }
 
             let authorDetails = await UserServices.getAuthor({ids: [authorId]});
 

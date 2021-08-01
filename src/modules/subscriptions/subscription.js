@@ -8,6 +8,9 @@ const _ = require('lodash');
 
 class SubscriptionService {
 
+     /**
+     * @description : returns the list of set thresholds for the premium subscription
+     */
     static async getSubscriptionConstraints() {
 
         let subscriptionCaps = await SubscriptionQuery.getSubscriptionConstraints();
@@ -18,6 +21,10 @@ class SubscriptionService {
 
     }
 
+
+     /**
+     * @description : returns a map of thresholds for the premium subscription [code => threshold]
+     */
     static createThresholdMap(subscriptionCaps) {
 
         if (!CommonUtils.checkIfNotEmptyArray(subscriptionCaps)) return {};
@@ -28,6 +35,10 @@ class SubscriptionService {
         return subscriptionMap;
     }
 
+    
+    /**
+     * @description : returns a bool if there is a difference in config between new and existing threshold 
+     */
     static checkForConstraintDiff(newConfigs=[], oldConfigs=[]) {
 
         let oldConfigsMap = new Map();
@@ -52,6 +63,9 @@ class SubscriptionService {
     }
 
 
+    /**
+     * @description : updates threshold for premium subscription in the db 
+     */
     static async updateSubscriptionCaps(newConstraints) {
 
         if (!CommonUtils.checkIfNotEmptyArray(newConstraints)) {
@@ -72,6 +86,10 @@ class SubscriptionService {
 
     }
 
+
+    /**
+     * @description : service to update author's eligibility for the premium subscription 
+     */
     static async updateAuthorSubscription(authorIds=[], constraints={}) {
 
         if (Object.keys(constraints).length==0) {
@@ -116,6 +134,9 @@ class SubscriptionService {
     }
 
 
+    /**
+     * @description : returns a map of author against the flag to indicate if the author passed the popularity threshold 
+     */
     static updateEligibilityByFollowers(authorsEligibility, followersMap, followersCap) {
 
         for (let authorid of Object.keys(authorsEligibility)) {
@@ -131,6 +152,10 @@ class SubscriptionService {
         return ;
     }
 
+
+    /**
+     * @description : returns a map of author against the flag to indicate if the author passed activeness test 
+     */
     static updateEligibilityByArticles(authorsEligibility, publishedArticlesMap, constraints) {
 
         let capTimeInMilisec = constraints[Constants.SUBSCRIPTION_CAP_CODE.publishing_window_hour]*60*60*1000;
@@ -159,6 +184,9 @@ class SubscriptionService {
     }
 
 
+    /**
+     * @description : returns query to update authors eligibility for premium subscription
+     */
     static getUpdatedSubscription(authorsEligibility) {
 
         let updateQueries = '';

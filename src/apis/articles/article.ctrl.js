@@ -7,10 +7,15 @@ const SubscriptionServices = require('../../modules/subscriptions/subscription')
 
 class ArticleCtrl {
 
+    /**
+     * @description : adds an article against an author 
+     */
     static async addArticle(req, res, next) {
         try {
             
-            //authorid, title, description(o), content
+            if ( !req.body.hasOwnProperty('authorid') || !req.body.hasOwnProperty('title') || !req.body.hasOwnProperty('content')) {
+                throw {statusCode: HttpStatus.BAD_REQUEST, msg: "Missing Parameters"};
+            }
 
             let authorExists = await UserServices.checkIfAuthorExists({id: req.body.authorid});
             
