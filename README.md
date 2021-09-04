@@ -86,3 +86,98 @@ Also consider how we can add and view an author and her eligibility status.
     - authentication
     - authors cannot follow fellow author 
     - test suite 
+
+
+----
+ 
+ API Documentation 
+ 
+ - Add Author
+    - Adds a new user to the system, with the premium subscription eligibility defaulted to false 
+        
+            curl --location --request POST '13.126.33.195:8080/pratilipi/user/author' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "name": "Shivani Patel",
+                "emailid": "patelshivani@gmail.com",
+                "phone":  4386439976
+            }'
+
+
+- Get author by ID  
+    - last param is the author id 
+    - The api returns the user details along with 
+        - the flag to indicate whether or not the user is eligible for premium subscription 
+        - Followers count 
+        - Last 3 published articles 
+
+                curl --location --request GET '13.126.33.195:8080/pratilipi/user/author/4'
+
+
+- Update Authors Subscription  
+    - Cron to update all authors premium subscription eligibility. 
+    - The cron runs every minute
+        
+            curl --location --request PUT '13.126.33.195:8080/pratilipi/subscription/premiumSubscription'
+
+
+- Update Subscription threshold 
+    - Keys in body : 
+        - required followers count(FC) [currently set to 2 ]
+        - required published article(MPC),  [currently set to 2 ]
+        - required time cap in hours (PTW)  [currently set to 10 hours ]
+    - Updating any of the key will update the threshold for the authors as well as set the eligibility for premium subscription as per the new constraint
+ 
+            curl --location --request PUT '13.126.33.195:8080/pratilipi/subscription/threshold' \
+                --header 'Content-Type: application/json' \
+                --data-raw '{
+                    "constraints" : [
+                        {"code": "FC", "threshold": 3},
+                         {"code": "MPC", "threshold": 2},
+                          {"code": "PTW", "threshold": 11}
+                    ]
+            }'
+
+
+- Add Article 
+    - Adds a new article against the author id (valid author ids 1-4)
+    - This internally updates the eligibility of the author for premium subscription
+            
+            curl --location --request POST '13.126.33.195:8080/pratilipi/article' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "authorid": 4,
+                "title": "dwihdi Sefjdb dis ds",
+                "description": "dsgd dnoishdx djsiu bidgsdb",
+                "content": "dasbjduyghao scnd isidzgvsdg ihds"
+            }'
+
+
+- Follow Author 
+    - User can follow the author 
+    - Valid user ids → 1 to 8 
+    - Valid author ids → 1 to 4
+    - This internally updates the eligibility of the author for premium subscription
+
+            curl --location --request PUT '13.126.33.195:8080/pratilipi/follower/follow' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "authorid": 4,
+                "userid": 4
+            }'
+
+
+- Unfollow Author 
+    - User can unfollow the author 
+    - This internally updates the eligibility of the author for premium subscription
+
+            curl --location --request PUT '13.126.33.195:8080/pratilipi/follower/unfollow' \
+                --header 'Content-Type: application/json' \
+                --data-raw '{
+                    "authorid": 4,
+                    "userid": 6
+                }'
+
+
+
+
