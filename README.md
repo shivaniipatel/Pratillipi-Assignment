@@ -90,8 +90,7 @@ Also consider how we can add and view an author and her eligibility status.
 
 ----
  
-** API Documentation **
-
+**API Documentation**
  - Add Author
     - Adds a new user to the system, with the premium subscription eligibility defaulted to false 
         
