@@ -1,5 +1,5 @@
 
-Case -
+**Case** 
 
 In our platform, users can subscribe to authors by paying a small amount and gain access to premium features like early access etc.
 As we have more than 2.5lakh authors and we have to give a fair chance for authors to reach to more users and subscribers, we mark authors as eligible for subscription by two factors
@@ -36,7 +36,7 @@ Also consider how we can add and view an author and her eligibility status.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-- Modules 
+- **Modules** 
     - Users (authors, users )
         - add user 
             - {type : 'author/users', name: '', emailid: '', phome: , password:  }
@@ -90,8 +90,8 @@ Also consider how we can add and view an author and her eligibility status.
 
 ----
  
- API Documentation 
- 
+** API Documentation 
+** 
  - Add Author
     - Adds a new user to the system, with the premium subscription eligibility defaulted to false 
         
